@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* optional animations */
+@layer utilities {
+  .animate-fade {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+* {
+  caret-color: auto;
+}
+body {
+  cursor: default;
+}
