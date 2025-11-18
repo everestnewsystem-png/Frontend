@@ -6,7 +6,7 @@ import Protected from "./components/auth/Protected";
 import AdminOnly from "./components/auth/AdminOnly";
 
 // Main Pages
-import Homepage from "./pages/Homepage";
+import HomePage from "./pages/HomePage";
 
 // Country
 import Countries from "./pages/Countries";
@@ -59,16 +59,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* PUBLIC ROUTE */}
         <Route path="/login" element={<Navigate to="/" replace />} />
         <Route path="/" element={<Login />} />
 
         {/* PROTECTED ROUTES (User must be logged in) */}
         <Route element={<Protected />}>
-
+          <Route path="/" element={<HomePage />} />
           {/* Home */}
-          <Route path="/home" element={<Homepage />} />
+          <Route path="/home" element={<HomePage />} />
 
           {/* Countries */}
           <Route path="/countries" element={<Countries />} />
@@ -95,7 +94,6 @@ function App() {
 
           {/* ADMIN ONLY ROUTES */}
           <Route element={<AdminOnly />}>
-
             {/* Dashboard */}
             <Route path="/dashboard" element={<Dashboard />} />
 
@@ -118,11 +116,16 @@ function App() {
             {/* Tools */}
             <Route path="/tools" element={<Tools />} />
             <Route path="/search-tool" element={<SearchTool />} />
-            <Route path="/progress-change-tool" element={<ProgressChangeTool />} />
-            <Route path="/appointment-set-tool" element={<AppointmentSetTool />} />
+            <Route
+              path="/progress-change-tool"
+              element={<ProgressChangeTool />}
+            />
+            <Route
+              path="/appointment-set-tool"
+              element={<AppointmentSetTool />}
+            />
             <Route path="/print-tool" element={<PrintTool />} />
             <Route path="/search-permits" element={<SearchPermits />} />
-
           </Route>
         </Route>
       </Routes>
