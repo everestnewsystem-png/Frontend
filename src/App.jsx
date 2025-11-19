@@ -91,7 +91,8 @@ function App() {
           <Route path="/passport" element={<Passport />} />
           <Route path="/police" element={<Police />} />
           <Route path="/tasks" element={<Tasks />} />
-
+          <Route path="/tools" element={<Tools />} />
+          <Route path="/search-tool" element={<SearchTool />} />
           {/* ADMIN ONLY ROUTES */}
           <Route element={<AdminOnly />}>
             {/* Dashboard */}
@@ -114,8 +115,7 @@ function App() {
             <Route path="/view-payment/:id" element={<ViewPayment />} />
 
             {/* Tools */}
-            <Route path="/tools" element={<Tools />} />
-            <Route path="/search-tool" element={<SearchTool />} />
+
             <Route
               path="/progress-change-tool"
               element={<ProgressChangeTool />}
