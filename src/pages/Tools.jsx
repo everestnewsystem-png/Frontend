@@ -33,10 +33,16 @@ const Tools = () => {
       icon: <Calendar size={24} />
     },
     { 
-      label: "Print Tool", 
+      label: "AppointmentView Tool", 
       path: "/print-tool", 
       color: "from-amber-600 to-amber-800", 
       icon: <Printer size={24} />
+    },
+    { 
+      label: "Letter Tool", 
+      path: "/offer", 
+      color: "from-green-600 to-green-800", 
+      icon: <Calendar size={24} />
     },
   ];
 

@@ -21,37 +21,38 @@ const Applicants = () => {
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
 
+  const extractArray = (obj) => {
+    if (!obj) return [];
+
+    if (Array.isArray(obj)) return obj;
+
+    if (Array.isArray(obj.data)) return obj.data;
+    if (Array.isArray(obj.applicants)) return obj.applicants;
+    if (Array.isArray(obj.items)) return obj.items;
+    if (Array.isArray(obj.list)) return obj.list;
+
+    for (let key in obj) {
+      if (Array.isArray(obj[key])) return obj[key];
+      if (typeof obj[key] === "object") {
+        const nested = extractArray(obj[key]);
+        if (nested.length) return nested;
+      }
+    }
+
+    return [];
+  };
+
+  // ✅ First load: only first page (/applicants → 10 from backend)
   const fetchApplicants = async () => {
     try {
       setLoading(true);
 
       const res = await api.get("/applicants");
-
-      const extractArray = (obj) => {
-        if (!obj) return [];
-
-        if (Array.isArray(obj)) return obj;
-
-        if (Array.isArray(obj.data)) return obj.data;
-        if (Array.isArray(obj.applicants)) return obj.applicants;
-        if (Array.isArray(obj.items)) return obj.items;
-        if (Array.isArray(obj.list)) return obj.list;
-
-        for (let key in obj) {
-          if (Array.isArray(obj[key])) return obj[key];
-          if (typeof obj[key] === "object") {
-            const nested = extractArray(obj[key]);
-            if (nested.length) return nested;
-          }
-        }
-
-        return [];
-      };
-
       const arr = extractArray(res.data);
 
       setData(arr);
       setVisible(arr.slice(0, 10));
+      setShowAll(false);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching applicants:", err);
@@ -71,6 +72,7 @@ const Applicants = () => {
     fetchApplicants();
   };
 
+  // 🔍 Client-side search on whatever is in `data`
   const handleSearch = () => {
     if (!search.trim()) {
       setVisible(data.slice(0, 10));
@@ -89,9 +91,22 @@ const Applicants = () => {
     }, 500);
   };
 
-  const showAllRows = () => {
-    setVisible(data);
-    setShowAll(true);
+  // 🆕 Show All: fetch ALL from backend using ?all=true
+  const showAllRows = async () => {
+    try {
+      setLoading(true);
+
+      const res = await api.get("/applicants?all=true");
+      const arr = extractArray(res.data);
+
+      setData(arr);
+      setVisible(arr); // show everything
+      setShowAll(true);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching all applicants:", err);
+      setLoading(false);
+    }
   };
 
   const resetView = () => {
@@ -112,7 +127,7 @@ const Applicants = () => {
             <h1 className="text-3xl font-bold text-white mb-2">Applicants</h1>
             <p className="text-gray-400">Manage and track all applicant records</p>
           </div>
-          
+
           <button
             onClick={() => navigate("/add-applicant")}
             className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center space-x-2"
@@ -126,13 +141,16 @@ const Applicants = () => {
         <div className="bg-gray-800 rounded-xl shadow-lg border border-gray-700 p-6 mb-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
               <input
                 className="w-full bg-gray-700 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Search applicants by name..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
               />
             </div>
             <div className="flex gap-2">
@@ -173,13 +191,13 @@ const Applicants = () => {
                   </span>
                 )}
               </div>
-              
+
               {!showAll && data.length > 10 && !search && (
                 <button
                   onClick={showAllRows}
                   className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 border border-gray-600"
                 >
-                  Show All ({data.length})
+                  Show All ({data.length || "..."})
                 </button>
               )}
             </div>
@@ -195,7 +213,9 @@ const Applicants = () => {
                   No Applicants Found
                 </h3>
                 <p className="text-gray-500">
-                  {search ? `No applicants found matching "${search}"` : "No applicants in the system"}
+                  {search
+                    ? `No applicants found matching "${search}"`
+                    : "No applicants in the system"}
                 </p>
               </div>
             )}

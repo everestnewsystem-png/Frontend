@@ -55,6 +55,9 @@ import ProgressChangeTool from "./pages/ProgressChangeTool";
 import AppointmentSetTool from "./pages/AppointmentSetTool";
 import PrintTool from "./pages/PrintTool";
 import SearchPermits from "./pages/search-permits";
+import OfferCompany from "./pages/OfferCompany";
+import GenerateOffer from "./pages/GenerateOffer";
+import GenerateContract from "./pages/GenerateContract";
 function App() {
   return (
     <BrowserRouter>
@@ -125,6 +128,9 @@ function App() {
               element={<AppointmentSetTool />}
             />
             <Route path="/print-tool" element={<PrintTool />} />
+            <Route path="/offer" element={<OfferCompany />} />
+             <Route path="/generateoffer" element={<GenerateOffer />} />
+             <Route path="/generate-cim" element={<GenerateContract />} />
             <Route path="/search-permits" element={<SearchPermits />} />
           </Route>
         </Route>

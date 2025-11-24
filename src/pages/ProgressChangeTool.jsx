@@ -29,6 +29,10 @@ const ProgressChangeTool = () => {
   const [fetching, setFetching] = useState(true);
   const [searching, setSearching] = useState(false);
 
+  // 🆕 status filter for table header
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  // 🔹 original: fetch FIRST 10 (because backend paginates by 10)
   const fetchApplicants = async () => {
     setFetching(true);
     try {
@@ -43,8 +47,23 @@ const ProgressChangeTool = () => {
     }
   };
 
+  // 🆕 new: fetch ALL applicants (backend already supports ?all=true)
+  const fetchAllApplicants = async () => {
+    setFetching(true);
+    try {
+      const res = await api.get("/applicants?all=true");
+      const data = res.data?.results || res.data || [];
+      setApplicants(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching ALL applicants:", error);
+      setApplicants([]);
+    } finally {
+      setFetching(false);
+    }
+  };
+
   useEffect(() => {
-    fetchApplicants();
+    fetchApplicants(); // first load → only 10
   }, []);
 
   const toggleSelect = (id) => {
@@ -74,8 +93,9 @@ const ProgressChangeTool = () => {
 
   // ✅ Search applicants by name
   const runSearch = async () => {
+    // 🆕 if no value → fetch ALL applicants and show them
     if (!searchValue.trim()) {
-      fetchApplicants();
+      await fetchAllApplicants();
       return;
     }
 
@@ -94,8 +114,19 @@ const ProgressChangeTool = () => {
 
   const clearSearch = () => {
     setSearchValue("");
-    fetchApplicants();
+    setStatusFilter("all");      // reset filter too
+    fetchApplicants();           // back to first 10
   };
+
+  // 🆕 filter by status (client side)
+  const filteredApplicants =
+    statusFilter === "all"
+      ? applicants
+      : applicants.filter(
+          (a) =>
+            (a.progressStatus || "").toLowerCase() ===
+            statusFilter.toLowerCase()
+        );
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -129,7 +160,7 @@ const ProgressChangeTool = () => {
             >
               {searching ? "Searching..." : "Search"}
             </button>
-            {searchValue && (
+            {(searchValue || statusFilter !== "all") && (
               <button
                 onClick={clearSearch}
                 className="px-5 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg font-semibold text-white"
@@ -168,24 +199,55 @@ const ProgressChangeTool = () => {
           </button>
         </div>
 
+        {/* 🆕 Show All button (table-level) */}
+        {!fetching && (
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={fetchAllApplicants}
+              className="px-4 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-md text-xs font-medium text-white"
+            >
+              Show All
+            </button>
+          </div>
+        )}
+
         {/* Applicants Table */}
         {fetching ? (
           <div className="text-center text-gray-400 py-10">
             Loading applicants...
           </div>
-        ) : Array.isArray(applicants) && applicants.length > 0 ? (
+        ) : Array.isArray(filteredApplicants) && filteredApplicants.length > 0 ? (
           <div className="overflow-x-auto rounded-lg border border-gray-700 bg-gray-800">
             <table className="w-full text-sm">
               <thead className="bg-gray-700 text-gray-300 uppercase text-xs">
                 <tr>
                   <th className="p-3">Select</th>
                   <th className="p-3 text-left">Name</th>
-                  <th className="p-3 text-left">Progress</th>
+
+                  {/* 🆕 Progress header with status filter */}
+                  <th className="p-3 text-left">
+                    <div className="flex flex-col gap-1">
+                      <span>Progress</span>
+                      <select
+                        className="bg-gray-800 border border-gray-600 rounded-md px-2 py-1 text-[11px] text-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                      >
+                        <option value="all">All</option>
+                        {progressOptions.map((p) => (
+                          <option key={p} value={p}>
+                            {p}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </th>
+
                   <th className="p-3 text-left">Agent</th>
                 </tr>
               </thead>
               <tbody>
-                {applicants.map((a) => (
+                {filteredApplicants.map((a) => (
                   <tr
                     key={a._id}
                     className="border-b border-gray-700 hover:bg-gray-750 transition-colors"
