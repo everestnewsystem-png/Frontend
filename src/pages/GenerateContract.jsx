@@ -428,7 +428,7 @@ Email : {offercompany.email}, Tel {offercompany.contact}
               Domnul/Doamna {CIMAPPLICANT.NAME} va fi angajat/a in cadrul compania noastra cu contract individual de munca pe o perioada de nedeterminata, pe functia de {cimApplicant.jobtitle} (cod COR {cimApplicant.corcode}) conform avizului de munca nr. {cimApplicant.workpermitno} din data {cimApplicant.workpermitdate}  si CNP {cimApplicant.cnp}.
 
 De asemenea, in baza contractului de munca, vor fi asigurate urmatoarele:
--	Cazare gratuit la adresa din cimapplicant.accommodationaddress}. 
+-	Cazare gratuit la adresa din {cimapplicant.accommodationaddress}. 
 -	Asigurare medicala si asigurare sociala.
 -	Hrana zilnica sau bonuri de masa.
 
