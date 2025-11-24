@@ -7,10 +7,10 @@ import { ErrorProvider } from "./context/ErrorContext.jsx";
 import Maintenance from "./Maintenance.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-<Maintenance/> 
-  // <AuthProvider>
-  //   <ErrorProvider>
-  //   <App />
-  //   </ErrorProvider>
-  // </AuthProvider>
+/* <Maintenance/>  */
+  <AuthProvider>
+    <ErrorProvider>
+    <App />
+    </ErrorProvider>
+  </AuthProvider>
 );

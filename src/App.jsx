@@ -90,12 +90,15 @@ function App() {
           <Route path="/edit-applicant/:id" element={<EditApplicant />} />
           <Route path="/view-applicant/:id" element={<ViewApplicant />} />
 
-          {/* Passport / Police / Tasks */}
+          {/* Passport / Police / Tasks/ tools */}
           <Route path="/passport" element={<Passport />} />
           <Route path="/police" element={<Police />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/tools" element={<Tools />} />
           <Route path="/search-tool" element={<SearchTool />} />
+          <Route path="/offer" element={<OfferCompany />} />
+          <Route path="/generateoffer" element={<GenerateOffer />} />
+          <Route path="/generate-cim" element={<GenerateContract />} />
           {/* ADMIN ONLY ROUTES */}
           <Route element={<AdminOnly />}>
             {/* Dashboard */}
@@ -128,9 +131,7 @@ function App() {
               element={<AppointmentSetTool />}
             />
             <Route path="/print-tool" element={<PrintTool />} />
-            <Route path="/offer" element={<OfferCompany />} />
-             <Route path="/generateoffer" element={<GenerateOffer />} />
-             <Route path="/generate-cim" element={<GenerateContract />} />
+
             <Route path="/search-permits" element={<SearchPermits />} />
           </Route>
         </Route>
