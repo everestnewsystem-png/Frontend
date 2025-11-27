@@ -133,6 +133,7 @@ function App() {
               path="/appointment-set-tool"
               element={<AppointmentSetTool />}
             />
+            
             <Route path="/print-tool" element={<PrintTool />} />
     <Route path="/agentassign" element={<AssignApplicants />} />
             <Route path="/search-permits" element={<SearchPermits />} />
