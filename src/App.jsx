@@ -58,9 +58,12 @@ import SearchPermits from "./pages/search-permits";
 import OfferCompany from "./pages/OfferCompany";
 import GenerateOffer from "./pages/GenerateOffer";
 import GenerateContract from "./pages/GenerateContract";
+import Navbar from "./components/Navbar";
+import AssignApplicants from "./pages/AssignApplicants";
 function App() {
   return (
     <BrowserRouter>
+    <Navbar/>
       <Routes>
         {/* PUBLIC ROUTE */}
         <Route path="/login" element={<Navigate to="/" replace />} />
@@ -131,7 +134,7 @@ function App() {
               element={<AppointmentSetTool />}
             />
             <Route path="/print-tool" element={<PrintTool />} />
-
+    <Route path="/agentassign" element={<AssignApplicants />} />
             <Route path="/search-permits" element={<SearchPermits />} />
           </Route>
         </Route>

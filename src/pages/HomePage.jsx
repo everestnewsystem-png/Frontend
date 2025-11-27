@@ -29,7 +29,7 @@ const HomePage = () => {
       <div className="relative z-10">
         <TopStrip />
         <SecondStrip />
-
+  
         {/* Main content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Header */}

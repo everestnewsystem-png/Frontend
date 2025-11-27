@@ -286,6 +286,7 @@ const GenerateOffer = () => {
 
   return (
     <>
+   
       {/* PRINT & PREVIEW STYLES */}
       <style>
         {`
@@ -843,6 +844,7 @@ const GenerateOffer = () => {
                 </tr>
               </tbody>
             </table>
+            
           </div>
         )}
       </div>

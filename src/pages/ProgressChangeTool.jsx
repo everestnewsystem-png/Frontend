@@ -13,6 +13,8 @@ const progressOptions = [
   "permit received",
   "permit rejected",
   "embassy submitted",
+  "appointment confirmed",
+  "interview faced",
   "mail received",
   "visa rejected",
   "Visa stampped",

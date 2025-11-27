@@ -2,7 +2,7 @@ import TopStrip from "../components/top-strip";
 import SecondStrip from "../components/second-strip";
 import Box from "../components/box";
 import { useNavigate } from "react-router-dom";
-import { Search, TrendingUp, Calendar, Printer, Settings } from "lucide-react";
+import { Search, TrendingUp, Calendar, Eye,Printer, Settings,PersonStanding  } from "lucide-react";
 
 const Tools = () => {
   const navigate = useNavigate();
@@ -36,13 +36,19 @@ const Tools = () => {
       label: "AppointmentView Tool", 
       path: "/print-tool", 
       color: "from-amber-600 to-amber-800", 
-      icon: <Printer size={24} />
+      icon: <Eye size={24} />
     },
     { 
       label: "Letter Tool", 
       path: "/offer", 
       color: "from-green-600 to-green-800", 
       icon: <Calendar size={24} />
+    },
+    { 
+      label: "Agent Change Tool", 
+      path: "/agentassign", 
+      color: "from-green-600 to-green-800", 
+      icon: <PersonStanding size={24} />
     },
   ];
 
